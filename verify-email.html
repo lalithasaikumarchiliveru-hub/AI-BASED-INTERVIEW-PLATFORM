@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Email — AI Interview Prep</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --primary: #6c63ff;
+            --bg: #0f0f1a;
+            --card: #1a1a2e;
+            --border: rgba(108, 99, 255, 0.25);
+            --text: #e2e2f0;
+            --muted: #8888a8;
+            --success: #4cbb7f;
+            --error: #ff6b6b;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .bg-orbs {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.3;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .orb-1 {
+            width: 350px;
+            height: 350px;
+            background: var(--primary);
+            top: -80px;
+            left: -80px;
+        }
+
+        .orb-2 {
+            width: 280px;
+            height: 280px;
+            background: #ff6bff;
+            bottom: -60px;
+            right: -60px;
+            animation-delay: -4s;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translate(0, 0)
+            }
+
+            50% {
+                transform: translate(15px, -15px)
+            }
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 420px;
+            padding: 16px;
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 44px 36px;
+            text-align: center;
+            box-shadow: 0 32px 80px rgba(0, 0, 0, 0.5);
+        }
+
+        .icon-wrap {
+            width: 72px;
+            height: 72px;
+            margin: 0 auto 20px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+        }
+
+        .icon-loading {
+            background: rgba(108, 99, 255, 0.15);
+            color: var(--primary);
+        }
+
+        .icon-success {
+            background: rgba(76, 187, 127, 0.15);
+            color: var(--success);
+        }
+
+        .icon-error {
+            background: rgba(255, 107, 107, 0.15);
+            color: var(--error);
+        }
+
+        h2 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        p {
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .email-badge {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 4px 14px;
+            background: rgba(108, 99, 255, 0.12);
+            border: 1px solid var(--border);
+            border-radius: 9999px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2.5px solid rgba(108, 99, 255, 0.2);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            margin: 0 auto 16px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 24px;
+            padding: 12px 28px;
+            border: none;
+            cursor: pointer;
+            background: linear-gradient(135deg, var(--primary), #a970ff);
+            color: #fff;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 12px;
+            text-decoration: none;
+            box-shadow: 0 6px 20px rgba(108, 99, 255, 0.3);
+            transition: opacity 0.2s;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .btn-outline {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 12px;
+            padding: 11px 24px;
+            border: 1.5px solid var(--border);
+            background: transparent;
+            color: var(--muted);
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            border-radius: 12px;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .btn-outline:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <!-- Loading state -->
+            <div id="state-loading">
+                <div class="spinner"></div>
+                <div class="icon-wrap icon-loading"><i class="fas fa-envelope-open-text"></i></div>
+                <h2>Verifying your email…</h2>
+                <p>Please wait a moment.</p>
+            </div>
+
+            <!-- Success state -->
+            <div id="state-success" style="display:none">
+                <div class="icon-wrap icon-success"><i class="fas fa-circle-check"></i></div>
+                <h2>Email Verified! 🎉</h2>
+                <p>Your email <span class="email-badge" id="verified-email">—</span> has been verified.<br>
+                    You can now access all features.</p>
+                <a href="interview.html" class="btn"><i class="fas fa-play"></i> Start Interviewing</a><br>
+                <a href="index.html" class="btn-outline"><i class="fas fa-house"></i> Home</a>
+            </div>
+
+            <!-- Error state -->
+            <div id="state-error" style="display:none">
+                <div class="icon-wrap icon-error"><i class="fas fa-circle-exclamation"></i></div>
+                <h2>Verification Failed</h2>
+                <p id="error-msg">The verification link is invalid or has expired.</p>
+                <a href="auth.html?tab=register" class="btn"><i class="fas fa-user-plus"></i> Create New Account</a><br>
+                <a href="auth.html" class="btn-outline"><i class="fas fa-arrow-right-to-bracket"></i> Sign In</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const BASE_URL = 'http://localhost:3001';
+
+        function show(id) {
+            ['loading', 'success', 'error'].forEach(s => {
+                document.getElementById(`state-${s}`).style.display = s === id ? 'block' : 'none';
+            });
+        }
+
+        async function verifyToken() {
+            const params = new URLSearchParams(location.search);
+            const token = params.get('token');
+
+            if (!token) {
+                document.getElementById('error-msg').textContent = 'No verification token found in the URL.';
+                show('error');
+                return;
+            }
+
+            try {
+                const res = await fetch(`${BASE_URL}/api/auth/verify-email?token=${encodeURIComponent(token)}`);
+                const json = await res.json();
+                if (res.ok && json.success) {
+                    document.getElementById('verified-email').textContent = json.data.email;
+                    show('success');
+                } else {
+                    document.getElementById('error-msg').textContent = json.error || 'Verification failed.';
+                    show('error');
+                }
+            } catch (err) {
+                document.getElementById('error-msg').textContent = 'Could not reach the server. Make sure the backend is running.';
+                show('error');
+            }
+        }
+
+        verifyToken();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /.env
+
+Sitemap: https://prepmind.ai/sitemap.xml

@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PrepMind AI — Land Your Dream Job with AI-Powered Interview Coaching</title>
+    <meta name="description"
+        content="Practice interviews with real AI feedback. Improve communication, technical skills, and confidence.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Sora:wght@600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* ━━━━━━━━━━━━━━━━━━━ LANDING-PAGE SPECIFIC ━━━━━━━━━━━━━━━━━━━ */
+        .hero {
+            position: relative;
+            z-index: 1;
+            padding: 110px 48px 80px;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px 6px 8px;
+            background: rgba(124, 58, 237, .12);
+            border: 1px solid rgba(124, 58, 237, .3);
+            border-radius: 9999px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--primary-l);
+            margin-bottom: 28px;
+        }
+
+        .hero-badge .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--primary-l);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: .4
+            }
+        }
+
+        .hero h1 {
+            font-size: clamp(38px, 7vw, 74px);
+            font-weight: 800;
+            line-height: 1.07;
+            letter-spacing: -.03em;
+            margin-bottom: 24px;
+        }
+
+        .hero h1 .grad {
+            background: linear-gradient(135deg, #fff 30%, var(--primary-l) 60%, var(--cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: var(--muted2);
+            max-width: 580px;
+            margin: 0 auto 40px;
+            line-height: 1.7;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 60px;
+        }
+
+        /* Mockup */
+        .hero-mockup-wrap {
+            position: relative;
+            max-width: 860px;
+            margin: 0 auto;
+        }
+
+        .hero-mockup-glow {
+            position: absolute;
+            inset: -40px;
+            background: radial-gradient(ellipse at center, rgba(124, 58, 237, .22) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-mockup {
+            position: relative;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, .1);
+            overflow: hidden;
+            box-shadow: 0 40px 120px rgba(0, 0, 0, .7);
+            background: #0d0d20;
+        }
+
+        .mockup-topbar {
+            background: rgba(255, 255, 255, .03);
+            border-bottom: 1px solid var(--border);
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .mdot {
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+        }
+
+        .mdot.r {
+            background: #EF4444
+        }
+
+        .mdot.y {
+            background: #F59E0B
+        }
+
+        .mdot.g {
+            background: #10B981
+        }
+
+        .mockup-title {
+            font-size: 12px;
+            color: var(--muted);
+            margin-left: 6px;
+            font-family: monospace;
+        }
+
+        .mockup-body {
+            padding: 28px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .mockup-q {
+            grid-column: 1/-1;
+            padding: 18px;
+            border-radius: 12px;
+            background: rgba(124, 58, 237, .1);
+            border: 1px solid rgba(124, 58, 237, .2);
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+
+        .mockup-score {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, .03);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .ring-num {
+            font-size: 38px;
+            font-weight: 800;
+            font-family: 'Sora', sans-serif;
+            color: var(--primary-l);
+        }
+
+        .ring-label {
+            font-size: 11px;
+            color: var(--muted);
+            margin-top: 2px;
+        }
+
+        .mockup-fb {
+            padding: 18px;
+            background: rgba(255, 255, 255, .03);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .mockup-fb h4 {
+            font-size: 12px;
+            color: var(--muted2);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .mtag {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 9999px;
+            font-size: 11px;
+            font-weight: 500;
+            margin: 3px 3px 3px 0;
+        }
+
+        .mtag.g {
+            background: rgba(16, 185, 129, .15);
+            color: #10B981
+        }
+
+        .mtag.a {
+            background: rgba(245, 158, 11, .15);
+            color: #F59E0B
+        }
+
+        .mtag.v {
+            background: rgba(124, 58, 237, .15);
+            color: var(--primary-l)
+        }
+
+        /* Stats bar */
+        .stats-bar {
+            position: relative;
+            z-index: 1;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            background: rgba(255, 255, 255, .02);
+            padding: 28px 48px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            flex: 1;
+            min-width: 160px;
+            max-width: 220px;
+            text-align: center;
+            padding: 0 24px;
+            border-right: 1px solid var(--border);
+        }
+
+        .stat-item:last-child {
+            border-right: none
+        }
+
+        .stat-num {
+            font-family: 'Sora', sans-serif;
+            font-size: 36px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-l), var(--cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-desc {
+            font-size: 13px;
+            color: var(--muted2);
+            margin-top: 3px;
+        }
+
+        /* Features */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+            gap: 20px;
+            margin-top: 56px;
+        }
+
+        .feature-card {
+            padding: 32px;
+            border-radius: 20px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            transition: all .3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card:hover {
+            border-color: rgba(124, 58, 237, .35);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, .4);
+        }
+
+        .fi {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+
+        .fi-v {
+            background: rgba(124, 58, 237, .15);
+            color: var(--primary-l)
+        }
+
+        .fi-c {
+            background: rgba(6, 182, 212, .15);
+            color: var(--cyan)
+        }
+
+        .fi-a {
+            background: rgba(245, 158, 11, .15);
+            color: #F59E0B
+        }
+
+        .fi-g {
+            background: rgba(16, 185, 129, .15);
+            color: #10B981
+        }
+
+        .fi-r {
+            background: rgba(239, 68, 68, .15);
+            color: #EF4444
+        }
+
+        .fi-p {
+            background: rgba(236, 72, 153, .15);
+            color: #EC4899
+        }
+
+        .feature-card h3 {
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .feature-card p {
+            font-size: 14px;
+            color: var(--muted2);
+            line-height: 1.65;
+        }
+
+        /* Steps */
+        .steps-track {
+            display: flex;
+            gap: 0;
+            margin-top: 56px;
+            flex-wrap: wrap;
+        }
+
+        .step {
+            flex: 1;
+            min-width: 220px;
+            padding: 32px 28px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            margin: 8px;
+            background: var(--card);
+            transition: border-color .2s;
+        }
+
+        .step:hover {
+            border-color: rgba(124, 58, 237, .35)
+        }
+
+        .step-num {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--primary-l);
+            background: rgba(124, 58, 237, .12);
+            border: 1px solid rgba(124, 58, 237, .2);
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            margin-bottom: 16px;
+        }
+
+        .step-icon {
+            font-size: 28px;
+            margin-bottom: 14px;
+        }
+
+        .step h3 {
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 10px
+        }
+
+        .step p {
+            font-size: 14px;
+            color: var(--muted2);
+            line-height: 1.65
+        }
+
+        /* Logos */
+        .logos-section {
+            padding: 48px 0;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            background: rgba(255, 255, 255, .01);
+        }
+
+        .logos-label {
+            text-align: center;
+            font-size: 13px;
+            color: var(--muted);
+            margin-bottom: 28px;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+        }
+
+        .logos-track {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding: 0 48px;
+        }
+
+        .co-logo {
+            font-family: 'Sora', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--muted);
+            padding: 10px 22px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            transition: all .2s;
+        }
+
+        .co-logo:hover {
+            color: var(--text);
+            border-color: rgba(124, 58, 237, .4)
+        }
+
+        /* Testimonials */
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 56px;
+        }
+
+        .t-card {
+            padding: 28px;
+            border-radius: 20px;
+            background: var(--card);
+            border: 1px solid var(--border);
+        }
+
+        .t-stars {
+            color: #F59E0B;
+            font-size: 13px;
+            margin-bottom: 14px;
+            letter-spacing: 2px;
+        }
+
+        .t-quote {
+            font-size: 15px;
+            color: var(--muted2);
+            line-height: 1.7;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .t-author {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .t-av {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 15px;
+            flex-shrink: 0;
+        }
+
+        .t-name {
+            font-weight: 600;
+            font-size: 14px
+        }
+
+        .t-role {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 2px
+        }
+
+        /* Pricing */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            margin-top: 56px;
+        }
+
+        .plan-card {
+            padding: 32px;
+            border-radius: 20px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            transition: all .3s;
+            position: relative;
+        }
+
+        .plan-card.pop {
+            background: rgba(124, 58, 237, .1);
+            border-color: rgba(124, 58, 237, .4);
+            box-shadow: 0 0 0 1px rgba(124, 58, 237, .2), 0 24px 60px rgba(124, 58, 237, .2);
+        }
+
+        .pop-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-size: 11px;
+            font-weight: 700;
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .plan-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--muted2);
+            margin-bottom: 8px;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+        }
+
+        .plan-price {
+            font-family: 'Sora', sans-serif;
+            font-size: 42px;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .plan-price sup {
+            font-size: 20px;
+            vertical-align: top;
+            margin-top: 12px
+        }
+
+        .plan-price .per {
+            font-size: 14px;
+            font-weight: 400;
+            color: var(--muted2)
+        }
+
+        .plan-desc {
+            font-size: 13px;
+            color: var(--muted2);
+            margin-bottom: 24px;
+        }
+
+        .plan-div {
+            height: 1px;
+            background: var(--border);
+            margin-bottom: 24px;
+        }
+
+        .plan-feats {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 28px;
+        }
+
+        .plan-feats li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+        }
+
+        .plan-feats li .ck {
+            color: #10B981;
+            font-size: 12px;
+        }
+
+        .plan-feats li .xm {
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .plan-feats li.dim {
+            color: var(--muted)
+        }
+
+        .btn-plan {
+            width: 100%;
+            padding: 13px;
+            border-radius: var(--radius-sm);
+            font: 600 14px 'Inter', sans-serif;
+            cursor: pointer;
+            transition: all .2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-p-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        .btn-p-outline:hover {
+            border-color: rgba(124, 58, 237, .5);
+            background: var(--card-hov)
+        }
+
+        .btn-p-primary {
+            background: linear-gradient(135deg, var(--primary), #a855f7);
+            border: none;
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(124, 58, 237, .35);
+        }
+
+        .btn-p-primary:hover {
+            opacity: .9;
+            transform: translateY(-1px)
+        }
+
+        /* CTA banner */
+        .cta-banner {
+            margin: 0 48px 80px;
+            border-radius: 24px;
+            background: linear-gradient(135deg, rgba(124, 58, 237, .2), rgba(6, 182, 212, .12));
+            border: 1px solid rgba(124, 58, 237, .3);
+            padding: 72px 48px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .cta-banner h2 {
+            font-size: clamp(26px, 4vw, 44px);
+            font-weight: 800;
+            margin-bottom: 16px
+        }
+
+        .cta-banner p {
+            font-size: 17px;
+            color: var(--muted2);
+            margin-bottom: 36px
+        }
+
+        /* Footer */
+        footer {
+            position: relative;
+            z-index: 1;
+            border-top: 1px solid var(--border);
+            padding: 48px;
+        }
+
+        .footer-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+        }
+
+        .footer-brand p {
+            font-size: 13px;
+            color: var(--muted2);
+            margin-top: 12px;
+            max-width: 260px;
+            line-height: 1.65
+        }
+
+        .footer-col h4 {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px
+        }
+
+        .footer-col ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px
+        }
+
+        .footer-col ul li a {
+            font-size: 13px;
+            color: var(--muted2);
+            transition: color .2s
+        }
+
+        .footer-col ul li a:hover {
+            color: var(--text)
+        }
+
+        .footer-bottom {
+            max-width: 1100px;
+            margin: 36px auto 0;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .footer-bottom p {
+            font-size: 13px;
+            color: var(--muted)
+        }
+
+        .socials {
+            display: flex;
+            gap: 16px;
+        }
+
+        .socials a {
+            color: var(--muted);
+            font-size: 16px;
+            transition: color .2s
+        }
+
+        .socials a:hover {
+            color: var(--primary-l)
+        }
+
+        @media(max-width:768px) {
+            .navbar {
+                padding: 0 20px
+            }
+
+            .nav-links {
+                display: none
+            }
+
+            .hero {
+                padding: 72px 20px 48px
+            }
+
+            .section-inner {
+                padding: 56px 20px
+            }
+
+            .stats-bar {
+                padding: 28px 20px
+            }
+
+            .stat-item {
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+                padding-bottom: 20px
+            }
+
+            .stat-item:last-child {
+                border-bottom: none
+            }
+
+            .footer-inner {
+                grid-template-columns: 1fr 1fr
+            }
+
+            .cta-banner {
+                margin: 0 20px 60px;
+                padding: 48px 24px
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="aurora">
+        <div class="aurora-blob"></div>
+        <div class="aurora-blob"></div>
+        <div class="aurora-blob"></div>
+    </div>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="nav-logo">
+            <div class="nav-logo-icon">🤖</div><span class="grad-text">PrepMind</span><span> AI</span>
+        </div>
+        <div class="nav-links">
+            <a href="#features">Features</a><a href="#how-it-works">How It Works</a>
+            <a href="#pricing">Pricing</a><a href="recruiter.html">Recruiters</a><a href="blog.html">Blog</a>
+        </div>
+        <div class="nav-cta" id="nav-cta">
+            <button class="btn-ghost" onclick="location.href='auth.html'">Sign In</button>
+            <button class="btn-primary-sm" onclick="goToInterview()">Get Started Free</button>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <div class="hero">
+        <div class="hero-badge">
+            <div class="dot"></div>Powered by Gemini AI &nbsp;·&nbsp; Real-time Feedback
+        </div>
+        <h1><span class="grad">Land Your Dream Job</span><br>with AI Interview Coaching</h1>
+        <p>Practice with intelligent AI that gives structured feedback on communication, technical depth, and confidence
+            — just like a real interviewer.</p>
+        <div class="hero-buttons">
+            <button class="btn-hero-primary" onclick="goToInterview()"><i class="fas fa-play"></i> Start Practicing
+                Free</button>
+            <a href="pricing.html" class="btn-hero-secondary"><i class="fas fa-tag"></i> View Pricing</a>
+        </div>
+        <div class="hero-mockup-wrap">
+            <div class="hero-mockup-glow"></div>
+            <div class="hero-mockup">
+                <div class="mockup-topbar">
+                    <div class="mdot r"></div>
+                    <div class="mdot y"></div>
+                    <div class="mdot g"></div>
+                    <span class="mockup-title">PrepMind AI — Mock Interview Results</span>
+                </div>
+                <div class="mockup-body">
+                    <div class="mockup-q">💬 &nbsp;"Tell me about a time you faced a complex technical challenge and how
+                        you resolved it."</div>
+                    <div class="mockup-score">
+                        <div class="ring-num">87</div>
+                        <div class="ring-label">Overall Score</div>
+                        <div style="display:flex;gap:10px;margin-top:12px;font-size:11px;color:var(--muted2)">
+                            <span>Comm: <b style="color:#10B981">91</b></span><span>Tech: <b
+                                    style="color:#F59E0B">82</b></span>
+                        </div>
+                    </div>
+                    <div class="mockup-fb">
+                        <h4>💪 Strengths</h4>
+                        <span class="mtag g">STAR Method ✓</span><span class="mtag g">Clear Ownership ✓</span><span
+                            class="mtag v">Specific Metrics ✓</span>
+                        <h4 style="margin-top:12px">⬆️ Improve</h4>
+                        <span class="mtag a">Add measurable outcome</span><span class="mtag a">Team impact</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-bar">
+        <div class="stat-item">
+            <div class="stat-num" data-target="12400">0</div>
+            <div class="stat-desc">Interviews Practiced</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-num" data-target="3200">0</div>
+            <div class="stat-desc">Users Worldwide</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-num" data-target="95">0</div>
+            <div class="stat-desc">% Satisfaction Rate</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-num" data-target="48">0</div>
+            <div class="stat-desc">Hours Saved per Hire</div>
+        </div>
+    </div>
+
+    <!-- TRUSTED BY -->
+    <div class="logos-section">
+        <p class="logos-label">Engineers from top companies practice with PrepMind</p>
+        <div class="logos-track">
+            <span class="co-logo">Google</span><span class="co-logo">Amazon</span><span class="co-logo">Microsoft</span>
+            <span class="co-logo">Deloitte</span><span class="co-logo">McKinsey</span><span class="co-logo">Goldman
+                Sachs</span>
+        </div>
+    </div>
+
+    <!-- FEATURES -->
+    <section id="features">
+        <div class="section-inner">
+            <div class="section-label">Features</div>
+            <h2 class="section-title">Everything you need<br>to ace any interview</h2>
+            <p class="section-sub">From behavioural to system design, PrepMind covers it all with real-time AI coaching.
+            </p>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="fi fi-v"><i class="fas fa-brain"></i></div>
+                    <h3>AI-Score Feedback</h3>
+                    <p>Scored on Communication, Technical Depth, Relevance, and Confidence with specific improvements
+                        after every answer.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="fi fi-c"><i class="fas fa-file-user"></i></div>
+                    <h3>Resume-Tailored Questions</h3>
+                    <p>Upload your CV and the AI generates questions that reference your real experience — just like a
+                        human recruiter.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="fi fi-a"><i class="fas fa-briefcase"></i></div>
+                    <h3>Job Description Matching</h3>
+                    <p>Paste any JD and get your match score, skills gap, and a personalised set of practice questions.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="fi fi-g"><i class="fas fa-chart-radar"></i></div>
+                    <h3>Progress Analytics</h3>
+                    <p>Radar charts, trend lines, streak trackers, and personalised weak-area alerts to guide your
+                        practice.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="fi fi-r"><i class="fas fa-microphone"></i></div>
+                    <h3>Voice Recording</h3>
+                    <p>Record your answers and review pacing, filler words, and delivery — not just content quality.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="fi fi-p"><i class="fas fa-building"></i></div>
+                    <h3>Recruiter Assessments</h3>
+                    <p>HR teams create shareable AI interview links. Candidates complete asynchronously — you see ranked
+                        results instantly.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section id="how-it-works"
+        style="background:rgba(255,255,255,.01);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+        <div class="section-inner">
+            <div class="section-label">Process</div>
+            <h2 class="section-title">Up and running in 3 minutes</h2>
+            <div class="steps-track">
+                <div class="step">
+                    <div class="step-icon">🎯</div>
+                    <div class="step-num">Step 01</div>
+                    <h3>Choose your focus</h3>
+                    <p>Select topic, difficulty, and number of questions. Or upload a resume for tailored questions.</p>
+                </div>
+                <div class="step">
+                    <div class="step-icon">💬</div>
+                    <div class="step-num">Step 02</div>
+                    <h3>Answer with a timer</h3>
+                    <p>Countdown timer matches real interview pacing. Type your answer — AI treats it like a real
+                        response.</p>
+                </div>
+                <div class="step">
+                    <div class="step-icon">📊</div>
+                    <div class="step-num">Step 03</div>
+                    <h3>Get detailed feedback</h3>
+                    <p>Overall score, per-question breakdown with strengths, improvements, and model answer hints.</p>
+                </div>
+                <div class="step">
+                    <div class="step-icon">🔁</div>
+                    <div class="step-num">Step 04</div>
+                    <h3>Iterate and improve</h3>
+                    <p>Track improvement over time. Weak areas are automatically flagged so you know exactly where to
+                        focus.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section>
+        <div class="section-inner">
+            <div class="section-label">Testimonials</div>
+            <h2 class="section-title">Trusted by job seekers<br>and recruiters alike</h2>
+            <div class="testimonials-grid">
+                <div class="t-card">
+                    <div class="t-stars">★★★★★</div>
+                    <p class="t-quote">"I practiced for 2 weeks before my Google L5 loop. The AI feedback was incredibly
+                        specific — I knew exactly what to fix. Got the offer."</p>
+                    <div class="t-author">
+                        <div class="t-av" style="background:rgba(124,58,237,.2);color:var(--primary-l)">AR</div>
+                        <div>
+                            <div class="t-name">Arjun Reddy</div>
+                            <div class="t-role">Software Engineer · Google</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="t-card">
+                    <div class="t-stars">★★★★★</div>
+                    <p class="t-quote">"As a bootcamp graduate PrepMind's DSA questions with real-time AI scoring helped
+                        me land my first dev job in 6 weeks."</p>
+                    <div class="t-author">
+                        <div class="t-av" style="background:rgba(6,182,212,.2);color:var(--cyan)">PS</div>
+                        <div>
+                            <div class="t-name">Priya Sharma</div>
+                            <div class="t-role">Frontend Developer · Startup</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="t-card">
+                    <div class="t-stars">★★★★★</div>
+                    <p class="t-quote">"We pre-screen 200+ candidates per month. AI scores let HR focus final rounds on
+                        best-fit candidates only."</p>
+                    <div class="t-author">
+                        <div class="t-av" style="background:rgba(245,158,11,.2);color:#F59E0B">DK</div>
+                        <div>
+                            <div class="t-name">Divya Kumar</div>
+                            <div class="t-role">Hiring Manager · TechCorp</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRICING PREVIEW -->
+    <section id="pricing" style="background:rgba(255,255,255,.01);border-top:1px solid var(--border)">
+        <div class="section-inner">
+            <div class="section-label">Pricing</div>
+            <h2 class="section-title">Start free, scale as you grow</h2>
+            <p class="section-sub">No credit card required. Upgrade or cancel anytime.</p>
+            <div class="pricing-grid">
+                <div class="plan-card">
+                    <div class="plan-name">Free</div>
+                    <div class="plan-price"><sup>$</sup>0<span class="per"> / month</span></div>
+                    <div class="plan-desc">Perfect for getting started</div>
+                    <div class="plan-div"></div>
+                    <ul class="plan-feats">
+                        <li><i class="fas fa-check ck"></i> 3 interviews per month</li>
+                        <li><i class="fas fa-check ck"></i> Behavioural questions</li>
+                        <li><i class="fas fa-check ck"></i> Basic AI feedback</li>
+                        <li class="dim"><i class="fas fa-xmark xm"></i> Resume upload</li>
+                        <li class="dim"><i class="fas fa-xmark xm"></i> PDF reports</li>
+                        <li class="dim"><i class="fas fa-xmark xm"></i> Analytics dashboard</li>
+                    </ul>
+                    <button class="btn-plan btn-p-outline" onclick="goToInterview()">Get Started Free</button>
+                </div>
+                <div class="plan-card pop">
+                    <div class="pop-badge">Most Popular</div>
+                    <div class="plan-name">Pro</div>
+                    <div class="plan-price"><sup>$</sup>12<span class="per"> / month</span></div>
+                    <div class="plan-desc">For serious job seekers</div>
+                    <div class="plan-div"></div>
+                    <ul class="plan-feats">
+                        <li><i class="fas fa-check ck"></i> Unlimited interviews</li>
+                        <li><i class="fas fa-check ck"></i> All topics (DSA, System Design)</li>
+                        <li><i class="fas fa-check ck"></i> Resume-tailored questions</li>
+                        <li><i class="fas fa-check ck"></i> JD matching & gap analysis</li>
+                        <li><i class="fas fa-check ck"></i> Full analytics & PDF reports</li>
+                        <li><i class="fas fa-check ck"></i> Priority AI processing</li>
+                    </ul>
+                    <button class="btn-plan btn-p-primary" onclick="location.href='pricing.html'">Upgrade to Pro <i
+                            class="fas fa-arrow-right"></i></button>
+                </div>
+                <div class="plan-card">
+                    <div class="plan-name">Team</div>
+                    <div class="plan-price"><sup>$</sup>49<span class="per"> / month</span></div>
+                    <div class="plan-desc">For teams & bootcamps</div>
+                    <div class="plan-div"></div>
+                    <ul class="plan-feats">
+                        <li><i class="fas fa-check ck"></i> Everything in Pro</li>
+                        <li><i class="fas fa-check ck"></i> 5 seats included</li>
+                        <li><i class="fas fa-check ck"></i> Recruiter dashboard</li>
+                        <li><i class="fas fa-check ck"></i> Shareable assessment links</li>
+                        <li><i class="fas fa-check ck"></i> Candidate ranking</li>
+                        <li><i class="fas fa-check ck"></i> CSV export</li>
+                    </ul>
+                    <button class="btn-plan btn-p-outline" onclick="location.href='pricing.html'">View Team
+                        Plan</button>
+                </div>
+            </div>
+            <p style="text-align:center;margin-top:28px;font-size:14px;color:var(--muted)">Need enterprise? <a
+                    href="mailto:hello@prepmind.ai" style="color:var(--primary-l)">Contact us →</a></p>
+        </div>
+    </section>
+
+    <!-- CTA BANNER -->
+    <div class="cta-banner">
+        <h2>Ready to ace your next interview?</h2>
+        <p>Join thousands of engineers and MBAs who practice smarter with PrepMind AI.</p>
+        <button class="btn-hero-primary" style="margin:0 auto" onclick="goToInterview()"><i class="fas fa-rocket"></i>
+            Start Practicing — It's Free</button>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <div class="nav-logo">
+                    <div class="nav-logo-icon">🤖</div><span class="grad-text">PrepMind</span><span> AI</span>
+                </div>
+                <p>AI-powered interview coaching that helps you practice smarter, improve faster, and land the role you
+                    deserve.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Product</h4>
+                <ul>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="pricing.html">Pricing</a></li>
+                    <li><a href="dashboard.html">Dashboard</a></li>
+                    <li><a href="interview.html">Practice Now</a></li>
+                    <li><a href="jd-match.html">JD Matcher</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="recruiter.html">For Recruiters</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">About</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="mailto:hello@prepmind.ai">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 PrepMind AI. All rights reserved.</p>
+            <div class="socials"><a href="#"><i class="fab fa-twitter"></i></a><a href="#"><i
+                        class="fab fa-linkedin"></i></a><a href="#"><i class="fab fa-github"></i></a></div>
+        </div>
+    </footer>
+
+    <script src="api.js"></script>
+    <script>
+        (function () {
+            if (typeof Auth !== 'undefined' && Auth.isLoggedIn()) {
+                document.getElementById('nav-cta').innerHTML = `
+            <a href="dashboard.html" style="color:var(--muted2);font-size:14px;font-weight:500">Dashboard</a>
+            <a href="interview.html" class="btn-primary-sm"><i class="fas fa-play"></i> Practice</a>`;
+            }
+        })();
+
+        // Counter animation
+        function runCounters() {
+            document.querySelectorAll('.stat-num[data-target]').forEach(el => {
+                const t = +el.dataset.target, s = Math.ceil(t / 60);
+                let c = 0;
+                const id = setInterval(() => {
+                    c = Math.min(c + s, t);
+                    const suffix = t >= 10000 ? '+' : t < 100 ? '%' : '+';
+                    el.textContent = c.toLocaleString() + suffix;
+                    if (c >= t) clearInterval(id);
+                }, 22);
+            });
+        }
+        const ob = new IntersectionObserver(e => { e.forEach(x => { if (x.isIntersecting) { runCounters(); ob.disconnect(); } }); }, { threshold: .3 });
+        const sb = document.querySelector('.stats-bar');
+        if (sb) ob.observe(sb);
+
+        function goToInterview() {
+            location.href = (typeof Auth !== 'undefined' && Auth.isLoggedIn()) ? 'interview.html' : 'auth.html';
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog — PrepMind AI Interview Tips</title>
+    <meta name="description"
+        content="Practical interview tips, career advice, and AI-powered prep guides for software engineers, MBAs, and product managers.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .blog-hero {
+            text-align: center;
+            padding: 80px 24px 56px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .blog-hero h1 {
+            font-size: clamp(32px, 5vw, 52px);
+            font-weight: 800;
+            letter-spacing: -.03em;
+            margin-bottom: 12px;
+        }
+
+        .blog-hero p {
+            font-size: 16px;
+            color: var(--muted2);
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .article-card {
+            border-radius: 20px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            overflow: hidden;
+            transition: all .3s;
+            cursor: pointer;
+        }
+
+        .article-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(124, 58, 237, .35);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, .4);
+        }
+
+        .article-cover {
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 56px;
+        }
+
+        .article-body {
+            padding: 24px;
+        }
+
+        .article-meta {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .article-tag {
+            padding: 4px 10px;
+            border-radius: 9999px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .article-date {
+            font-size: 12px;
+            color: var(--muted2);
+        }
+
+        .article-read {
+            font-size: 12px;
+            color: var(--muted2);
+        }
+
+        .article-card h3 {
+            font-size: 18px;
+            font-weight: 700;
+            line-height: 1.35;
+            margin-bottom: 10px;
+        }
+
+        .article-card p {
+            font-size: 14px;
+            color: var(--muted2);
+            line-height: 1.65;
+        }
+
+        .article-author {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+        }
+
+        .author-av {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        .author-name {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .author-title {
+            font-size: 11px;
+            color: var(--muted2);
+            margin-top: 1px;
+        }
+
+        .featured-card {
+            grid-column: 1/-1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .featured-card .article-cover {
+            height: auto;
+            min-height: 260px;
+        }
+
+        @media(max-width:640px) {
+            .featured-card {
+                grid-template-columns: 1fr;
+            }
+
+            .featured-card .article-cover {
+                height: 180px;
+            }
+        }
+
+        /* Newsletter */
+        .newsletter {
+            max-width: 560px;
+            margin: 0 auto 80px;
+            padding: 0 24px;
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+
+        .newsletter-box {
+            padding: 40px;
+            border-radius: 20px;
+            background: rgba(124, 58, 237, .07);
+            border: 1px solid rgba(124, 58, 237, .2);
+        }
+
+        .newsletter-box h3 {
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .newsletter-box p {
+            font-size: 14px;
+            color: var(--muted2);
+            margin-bottom: 24px;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 10px;
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, .05);
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            color: var(--text);
+            font: 400 14px 'Inter', sans-serif;
+            outline: none;
+        }
+
+        .newsletter-form input:focus {
+            border-color: var(--primary-l);
+        }
+
+        .newsletter-form button {
+            padding: 12px 20px;
+            background: linear-gradient(135deg, var(--primary), #a855f7);
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            font: 600 14px 'Inter', sans-serif;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="aurora">
+        <div class="aurora-blob"></div>
+        <div class="aurora-blob"></div>
+    </div>
+
+    <nav class="navbar">
+        <div class="nav-logo">
+            <div class="nav-logo-icon">🤖</div><a href="index.html"><span class="grad-text">PrepMind</span><span>
+                    AI</span></a>
+        </div>
+        <div class="nav-links"><a href="index.html#features">Features</a><a href="pricing.html">Pricing</a><a
+                href="blog.html" class="active">Blog</a></div>
+        <div class="nav-cta">
+            <button class="btn-ghost" onclick="location.href='auth.html'">Sign In</button>
+            <button class="btn-primary-sm" onclick="location.href='auth.html'">Get Started</button>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <div class="blog-hero">
+        <div class="section-label">Blog</div>
+        <h1>Interview tips that<br>actually work</h1>
+        <p>Practical guides from people who've been through Google, Amazon, McKinsey loops — and made it.</p>
+    </div>
+
+    <!-- Articles -->
+    <div class="articles-grid">
+        <!-- Featured -->
+        <div class="article-card featured-card" onclick="location.href='#'">
+            <div class="article-cover"
+                style="background:linear-gradient(135deg,rgba(124,58,237,.2),rgba(6,182,212,.15))">🧠</div>
+            <div class="article-body">
+                <div class="article-meta">
+                    <span class="article-tag pill-violet">Featured</span>
+                    <span class="article-tag pill-cyan">Behavioural</span>
+                    <span class="article-date">March 2026</span>
+                    <span class="article-read">· 8 min read</span>
+                </div>
+                <h3>The STAR Method, Supercharged: How AI Coaching Helped 1,000 Engineers Land Top 1% Offers</h3>
+                <p>We analysed 10,000+ AI-scored interview responses to understand what separates a "Good" answer from
+                    an "Excellent" one. The findings will change how you prepare.</p>
+                <div class="article-author">
+                    <div class="author-av" style="background:rgba(124,58,237,.2);color:var(--primary-l)">PM</div>
+                    <div>
+                        <div class="author-name">PrepMind Research Team</div>
+                        <div class="author-title">Data & Insights</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="article-card" onclick="location.href='#'">
+            <div class="article-cover"
+                style="background:linear-gradient(135deg,rgba(16,185,129,.15),rgba(6,182,212,.1))">💻</div>
+            <div class="article-body">
+                <div class="article-meta">
+                    <span class="article-tag pill-green">Technical</span>
+                    <span class="article-date">Feb 2026</span><span class="article-read"> · 6 min</span>
+                </div>
+                <h3>System Design Interviews: The 7-Step Framework That Works Every Time</h3>
+                <p>From requirements clarification to capacity estimation — a repeatable framework for senior
+                    engineering interviews at FAANG-level companies.</p>
+                <div class="article-author">
+                    <div class="author-av" style="background:rgba(16,185,129,.2);color:var(--green)">SR</div>
+                    <div>
+                        <div class="author-name">Siddharth Rao</div>
+                        <div class="author-title">Ex-Google SDE III</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="article-card" onclick="location.href='#'">
+            <div class="article-cover"
+                style="background:linear-gradient(135deg,rgba(245,158,11,.12),rgba(239,68,68,.08))">🎯</div>
+            <div class="article-body">
+                <div class="article-meta">
+                    <span class="article-tag pill-amber">Career Strategy</span>
+                    <span class="article-date">Jan 2026</span><span class="article-read"> · 5 min</span>
+                </div>
+                <h3>How to Use AI Mock Interviews to Reduce Interview Anxiety by 70%</h3>
+                <p>Interview anxiety is real. Here's a science-backed practice schedule and how AI-simulated interviews
+                    can rewire your nervous system response before the big day.</p>
+                <div class="article-author">
+                    <div class="author-av" style="background:rgba(245,158,11,.2);color:var(--amber)">NK</div>
+                    <div>
+                        <div class="author-name">Neha Kapoor</div>
+                        <div class="author-title">Career Coach</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="article-card" onclick="location.href='#'">
+            <div class="article-cover"
+                style="background:linear-gradient(135deg,rgba(236,72,153,.1),rgba(124,58,237,.1))">📊</div>
+            <div class="article-body">
+                <div class="article-meta">
+                    <span class="article-tag" style="background:rgba(236,72,153,.15);color:#EC4899">Product</span>
+                    <span class="article-date">Dec 2025</span><span class="article-read"> · 7 min</span>
+                </div>
+                <h3>PM Interviews Decoded: What Google and Meta Product Managers Look For in 2026</h3>
+                <p>Product sense, estimation, and leadership scenarios — broken down with real example questions and the
+                    exact frameworks top candidates use.</p>
+                <div class="article-author">
+                    <div class="author-av" style="background:rgba(236,72,153,.2);color:#EC4899">VP</div>
+                    <div>
+                        <div class="author-name">Vikram Patel</div>
+                        <div class="author-title">Ex-Meta PM</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="article-card" onclick="location.href='#'">
+            <div class="article-cover"
+                style="background:linear-gradient(135deg,rgba(6,182,212,.12),rgba(16,185,129,.08))">🏢</div>
+            <div class="article-body">
+                <div class="article-meta">
+                    <span class="article-tag pill-cyan">For Recruiters</span>
+                    <span class="article-date">Nov 2025</span><span class="article-read"> · 4 min</span>
+                </div>
+                <h3>How AI Pre-Screening Cut Our Hiring Time by 60% — A Recruiter's Story</h3>
+                <p>One hiring manager at a 500-person tech company shares how they went from 3-week phone screen cycles
+                    to AI assessments that deliver ranked candidates same-day.</p>
+                <div class="article-author">
+                    <div class="author-av" style="background:rgba(6,182,212,.2);color:var(--cyan)">DK</div>
+                    <div>
+                        <div class="author-name">Divya Kumar</div>
+                        <div class="author-title">Talent Acquisition Lead</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Newsletter -->
+    <div class="newsletter">
+        <div class="newsletter-box">
+            <h3>📬 Weekly Interview Tips</h3>
+            <p>Get one actionable interview tip every Tuesday. No spam, unsubscribe anytime.</p>
+            <div class="newsletter-form">
+                <input type="email" placeholder="your@email.com" id="nl-email">
+                <button onclick="subscribeNewsletter()">Subscribe</button>
+            </div>
+            <div id="nl-msg" style="margin-top:12px;font-size:13px;color:var(--green);display:none">✓ You're subscribed!
+                Check your inbox.</div>
+        </div>
+    </div>
+
+    <script>
+        function subscribeNewsletter() {
+            const email = document.getElementById('nl-email').value.trim();
+            if (!email || !email.includes('@')) { alert('Please enter a valid email address.'); return; }
+            document.getElementById('nl-msg').style.display = 'block';
+            document.getElementById('nl-email').value = '';
+        }
+    </script>
+</body>
+
+</html>

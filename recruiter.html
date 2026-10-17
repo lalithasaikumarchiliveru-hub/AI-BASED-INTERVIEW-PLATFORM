@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recruiter Dashboard — PrepMind AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .page-wrap {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 48px 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .dash-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 36px;
+        }
+
+        .dash-header h1 {
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        .dash-header p {
+            color: var(--muted2);
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+        /* Stats */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin-bottom: 36px;
+        }
+
+        .stat-card {
+            padding: 24px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+        }
+
+        .stat-card .sc-val {
+            font-family: 'Sora', sans-serif;
+            font-size: 32px;
+            font-weight: 800;
+        }
+
+        .stat-card .sc-label {
+            font-size: 13px;
+            color: var(--muted2);
+            margin-top: 4px;
+        }
+
+        .stat-card .sc-icon {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        /* Create assessment */
+        .create-card {
+            padding: 32px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            margin-bottom: 32px;
+        }
+
+        .create-card h2 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        @media(max-width:600px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--muted2);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+        }
+
+        .form-group select {
+            width: 100%;
+            padding: 12px 14px;
+            background: rgba(255, 255, 255, .04);
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            color: var(--text);
+            font: 400 14px 'Inter', sans-serif;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .form-group select:focus {
+            border-color: var(--primary-l);
+        }
+
+        .btn-create {
+            padding: 13px 28px;
+            background: linear-gradient(135deg, var(--primary), #a855f7);
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            font: 600 14px 'Inter', sans-serif;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 20px;
+            transition: all .2s;
+        }
+
+        .btn-create:hover {
+            opacity: .9;
+            transform: translateY(-1px);
+        }
+
+        /* Assessments table */
+        .table-card {
+            padding: 28px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+        }
+
+        .table-card h2 {
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border);
+            text-align: left;
+        }
+
+        td {
+            padding: 14px;
+            border-bottom: 1px solid rgba(255, 255, 255, .04);
+            font-size: 14px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, .02);
+        }
+
+        .share-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 12px;
+            background: rgba(124, 58, 237, .08);
+            border: 1px solid rgba(124, 58, 237, .2);
+            border-radius: 8px;
+            font-size: 12px;
+            font-family: monospace;
+            color: var(--primary-l);
+        }
+
+        .share-link button {
+            background: none;
+            border: none;
+            color: var(--muted2);
+            cursor: pointer;
+            font-size: 13px;
+            transition: color .2s;
+        }
+
+        .share-link button:hover {
+            color: var(--primary-l);
+        }
+
+        .score-pill {
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        /* Candidates modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(5, 5, 15, .8);
+            backdrop-filter: blur(8px);
+            z-index: 500;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        .modal {
+            background: #0d0d20;
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 36px;
+            width: 100%;
+            max-width: 700px;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: var(--muted2);
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .modal-close:hover {
+            color: var(--text);
+        }
+
+        .upgrade-gate {
+            text-align: center;
+            padding: 60px 24px;
+        }
+
+        .upgrade-gate .gate-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .upgrade-gate h2 {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .upgrade-gate p {
+            color: var(--muted2);
+            font-size: 15px;
+            margin-bottom: 28px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="aurora">
+        <div class="aurora-blob"></div>
+        <div class="aurora-blob b2"></div>
+    </div>
+
+    <nav class="navbar">
+        <div class="nav-logo">
+            <div class="nav-logo-icon">🤖</div><a href="index.html"><span class="grad-text">PrepMind</span><span>
+                    AI</span></a>
+        </div>
+        <div class="nav-links"><a href="dashboard.html">Dashboard</a><a href="interview.html">Practice</a><a
+                href="pricing.html">Pricing</a></div>
+        <div class="nav-cta">
+            <div id="nav-user"></div>
+        </div>
+    </nav>
+
+    <!-- Upgrade gate for free users -->
+    <div id="upgrade-gate"
+        style="display:none;position:relative;z-index:1;max-width:600px;margin:80px auto;padding:0 24px">
+        <div class="upgrade-gate">
+            <div class="gate-icon">🏢</div>
+            <h2>Recruiter features require Team plan</h2>
+            <p>Create shareable AI assessments, rank candidates, and replace phone screens — all with the Team or
+                Enterprise plan.</p>
+            <button class="btn-create" style="margin:0 auto" onclick="location.href='pricing.html'"><i
+                    class="fas fa-arrow-up-right"></i> Upgrade to Team Plan</button>
+        </div>
+    </div>
+
+    <div class="page-wrap" id="recruiter-content" style="display:none">
+        <div class="dash-header">
+            <div>
+                <h1>Recruiter Dashboard</h1>
+                <p>Create AI assessments, share with candidates, view ranked results.</p>
+            </div>
+            <button class="btn-create"
+                onclick="document.getElementById('create-section').scrollIntoView({behavior:'smooth'})"><i
+                    class="fas fa-plus"></i> New Assessment</button>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="sc-icon" style="color:var(--primary-l)"><i class="fas fa-link"></i></div>
+                <div class="sc-val" id="stat-assessments">0</div>
+                <div class="sc-label">Assessments Created</div>
+            </div>
+            <div class="stat-card">
+                <div class="sc-icon" style="color:var(--cyan)"><i class="fas fa-users"></i></div>
+                <div class="sc-val" id="stat-candidates">0</div>
+                <div class="sc-label">Candidates Assessed</div>
+            </div>
+            <div class="stat-card">
+                <div class="sc-icon" style="color:var(--green)"><i class="fas fa-check-circle"></i></div>
+                <div class="sc-val" id="stat-completed">0</div>
+                <div class="sc-label">Completed</div>
+            </div>
+            <div class="stat-card">
+                <div class="sc-icon" style="color:var(--amber)"><i class="fas fa-star"></i></div>
+                <div class="sc-val" id="stat-avg-score">—</div>
+                <div class="sc-label">Avg. Score</div>
+            </div>
+        </div>
+
+        <!-- Create assessment -->
+        <div class="create-card" id="create-section">
+            <h2><i class="fas fa-plus-circle" style="color:var(--primary-l);margin-right:8px"></i>Create New Assessment
+            </h2>
+            <div class="form-grid">
+                <div class="form-group"><label>Role Name</label><input class="input-field" type="text" id="role-name"
+                        placeholder="e.g. Senior Backend Engineer"></div>
+                <div class="form-group"><label>Company</label><input class="input-field" type="text" id="company-name"
+                        placeholder="e.g. Acme Corp"></div>
+                <div class="form-group"><label>Topic Focus</label>
+                    <select id="assess-topic">
+                        <option value="behavioral">Behavioural</option>
+                        <option value="data_structures">Data Structures & Algorithms</option>
+                        <option value="system_design">System Design</option>
+                        <option value="product_management">Product Management</option>
+                        <option value="leadership">Leadership</option>
+                    </select>
+                </div>
+                <div class="form-group"><label>Difficulty</label>
+                    <select id="assess-diff">
+                        <option value="easy">Easy</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="hard">Hard</option>
+                    </select>
+                </div>
+                <div class="form-group"><label>Questions</label>
+                    <select id="assess-num">
+                        <option value="3">3 questions</option>
+                        <option value="5" selected>5 questions</option>
+                        <option value="8">8 questions</option>
+                    </select>
+                </div>
+                <div class="form-group"><label>Time Limit per Question</label>
+                    <select id="assess-time">
+                        <option value="120">2 minutes</option>
+                        <option value="180" selected>3 minutes</option>
+                        <option value="300">5 minutes</option>
+                    </select>
+                </div>
+            </div>
+            <button class="btn-create" onclick="createAssessment()"><i class="fas fa-link"></i> Generate Assessment
+                Link</button>
+            <div id="new-link-box" style="display:none;margin-top:16px"></div>
+        </div>
+
+        <!-- Assessment list -->
+        <div class="table-card">
+            <h2>Your Assessments <span style="font-size:13px;font-weight:500;color:var(--muted2)"
+                    id="assessment-count"></span></h2>
+            <div id="assessment-list">
+                <div style="text-align:center;padding:40px;color:var(--muted2);font-size:14px"><i class="fas fa-link"
+                        style="font-size:24px;display:block;margin-bottom:12px;opacity:.4"></i>No assessments yet.
+                    Create one above.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Candidates Modal -->
+    <div class="modal-overlay" id="candidates-modal">
+        <div class="modal">
+            <button class="modal-close"
+                onclick="document.getElementById('candidates-modal').classList.remove('open')"><i
+                    class="fas fa-xmark"></i></button>
+            <h3 id="modal-title">Candidates</h3>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
+    <script src="api.js"></script>
+    <script>
+        const BASE_URL = 'http://localhost:3001';
+        let assessments = [];
+
+        (async function init() {
+            if (typeof Auth === 'undefined' || !Auth.isLoggedIn()) { location.href = 'auth.html'; return; }
+            const user = Auth.getUser();
+            document.getElementById('nav-user').innerHTML = `<span class="user-chip"><i class="fas fa-user"></i> ${user?.full_name || 'You'}</span>`;
+
+            // Check plan
+            try {
+                const r = await fetch(`${BASE_URL}/api/billing/subscription`, { headers: { Authorization: `Bearer ${Auth.getAccessToken()}` } });
+                const j = await r.json();
+                const plan = j.data?.plan_id || 'free';
+                const hasAccess = ['team', 'enterprise'].includes(plan);
+                document.getElementById('upgrade-gate').style.display = hasAccess ? 'none' : 'block';
+                document.getElementById('recruiter-content').style.display = hasAccess ? 'block' : 'none';
+                if (hasAccess) loadAssessments();
+            } catch {
+                // Show content anyway in dev mode
+                document.getElementById('upgrade-gate').style.display = 'none';
+                document.getElementById('recruiter-content').style.display = 'block';
+            }
+        })();
+
+        async function loadAssessments() {
+            // In dev mode, just show empty state since backend recruiter module isn't wired yet
+            // Placeholder UI
+            document.getElementById('stat-assessments').textContent = '0';
+            document.getElementById('stat-candidates').textContent = '0';
+            document.getElementById('stat-completed').textContent = '0';
+        }
+
+        async function createAssessment() {
+            const roleName = document.getElementById('role-name').value.trim();
+            if (!roleName) { alert('Please enter a role name.'); return; }
+            const company = document.getElementById('company-name').value.trim();
+            const topic = document.getElementById('assess-topic').value;
+            const diff = document.getElementById('assess-diff').value;
+            const numQ = document.getElementById('assess-num').value;
+            const timeLimit = document.getElementById('assess-time').value;
+
+            // Generate a mock share token for demo
+            const token = Math.random().toString(36).slice(2) + Date.now().toString(36);
+            const shareUrl = `${window.location.origin}/interview.html?assessment=${token}`;
+
+            const box = document.getElementById('new-link-box');
+            box.style.display = 'block';
+            box.innerHTML = `
+        <div style="padding:16px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);border-radius:12px">
+            <div style="font-size:13px;font-weight:600;color:var(--green);margin-bottom:8px"><i class="fas fa-check-circle"></i> Assessment created for <b>${roleName}</b>!</div>
+            <div style="font-size:12px;color:var(--muted2);margin-bottom:10px">Share this link with candidates:</div>
+            <div class="share-link">
+                <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${shareUrl}</span>
+                <button onclick="navigator.clipboard.writeText('${shareUrl}');this.innerHTML='✓ Copied!';setTimeout(()=>this.innerHTML='<i class=\\'fas fa-copy\\'></i>',2000)">
+                    <i class="fas fa-copy"></i>
+                </button>
+            </div>
+            <div style="font-size:12px;color:var(--muted);margin-top:8px">Topic: ${topic} · Difficulty: ${diff} · ${numQ} questions · ${timeLimit / 60} min each</div>
+        </div>`;
+        }
+    </script>
+</body>
+
+</html>

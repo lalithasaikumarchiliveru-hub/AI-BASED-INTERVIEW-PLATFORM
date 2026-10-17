@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing — PrepMind AI</title>
+    <meta name="description" content="Choose the plan that fits your goals. Start free, upgrade when you're ready.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Sora:wght@600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .page-hero {
+            text-align: center;
+            padding: 80px 48px 56px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .page-hero h1 {
+            font-size: clamp(34px, 5vw, 58px);
+            font-weight: 800;
+            letter-spacing: -.03em;
+            margin-bottom: 16px;
+        }
+
+        .page-hero p {
+            font-size: 17px;
+            color: var(--muted2);
+            max-width: 500px;
+            margin: 0 auto 32px;
+            line-height: 1.7;
+        }
+
+        /* Toggle */
+        .billing-toggle {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            justify-content: center;
+            margin-bottom: 56px;
+        }
+
+        .toggle-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--muted2);
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 48px;
+            height: 26px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            inset: 0;
+            cursor: pointer;
+            background: rgba(255, 255, 255, .1);
+            border-radius: 9999px;
+            border: 1px solid var(--border);
+            transition: .3s;
+        }
+
+        .slider::before {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            left: 3px;
+            top: 3px;
+            background: #fff;
+            border-radius: 50%;
+            transition: .3s;
+        }
+
+        .toggle-switch input:checked+.slider {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .toggle-switch input:checked+.slider::before {
+            transform: translateX(22px);
+        }
+
+        .save-pill {
+            padding: 3px 10px;
+            background: rgba(16, 185, 129, .15);
+            color: var(--green);
+            border-radius: 9999px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        /* Plan grid */
+        .plans-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 48px 80px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .plan-card {
+            padding: 36px 32px;
+            border-radius: 24px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            position: relative;
+            transition: all .3s;
+        }
+
+        .plan-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 24px 60px rgba(0, 0, 0, .4);
+            border-color: rgba(124, 58, 237, .3);
+        }
+
+        .plan-card.popular {
+            background: rgba(124, 58, 237, .08);
+            border: 1px solid rgba(124, 58, 237, .4);
+            box-shadow: 0 0 0 1px rgba(124, 58, 237, .15), 0 24px 60px rgba(124, 58, 237, .2);
+        }
+
+        .plan-card.enterprise {
+            background: linear-gradient(135deg, rgba(6, 182, 212, .05), rgba(124, 58, 237, .05));
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: -14px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 5px 18px;
+            border-radius: 9999px;
+            font-size: 12px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), #a855f7);
+            color: #fff;
+            white-space: nowrap;
+            box-shadow: 0 4px 16px rgba(124, 58, 237, .4);
+        }
+
+        .plan-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .plan-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--muted2);
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .plan-price {
+            display: flex;
+            align-items: flex-end;
+            gap: 4px;
+            margin-bottom: 8px;
+        }
+
+        .price-num {
+            font-family: 'Sora', sans-serif;
+            font-size: 48px;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .price-curr {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--muted2);
+        }
+
+        .price-period {
+            font-size: 14px;
+            color: var(--muted2);
+            margin-bottom: 6px;
+        }
+
+        .price-annual {
+            font-size: 12px;
+            color: var(--muted);
+            min-height: 18px;
+            margin-bottom: 20px;
+        }
+
+        .plan-tagline {
+            font-size: 14px;
+            color: var(--muted2);
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+
+        .plan-divider {
+            height: 1px;
+            background: var(--border);
+            margin-bottom: 24px;
+        }
+
+        .feature-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+
+        .feature-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 14px;
+        }
+
+        .fi-ck {
+            color: var(--green);
+            font-size: 12px;
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+
+        .fi-xm {
+            color: var(--muted);
+            font-size: 12px;
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+
+        .feature-list li.dim {
+            color: var(--muted);
+        }
+
+        .btn-cta {
+            width: 100%;
+            padding: 14px;
+            border-radius: var(--radius);
+            font: 600 15px 'Inter', sans-serif;
+            cursor: pointer;
+            transition: all .2s;
+            text-align: center;
+            display: block;
+        }
+
+        .btn-cta-solid {
+            background: linear-gradient(135deg, var(--primary), #a855f7);
+            color: #fff;
+            border: none;
+            box-shadow: 0 6px 24px rgba(124, 58, 237, .35);
+        }
+
+        .btn-cta-solid:hover {
+            opacity: .9;
+            transform: translateY(-1px);
+        }
+
+        .btn-cta-outline {
+            background: transparent;
+            border: 1.5px solid var(--border);
+            color: var(--text);
+        }
+
+        .btn-cta-outline:hover {
+            border-color: rgba(124, 58, 237, .5);
+            background: var(--card-hov);
+        }
+
+        /* Comparison table */
+        .compare-section {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 48px 80px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .compare-section h2 {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 32px;
+            text-align: center;
+        }
+
+        .compare-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .compare-table th,
+        td {
+            padding: 14px 20px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+            font-size: 14px;
+        }
+
+        .compare-table th {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--muted2);
+            background: rgba(255, 255, 255, .02);
+        }
+
+        .compare-table th:first-child {
+            border-radius: 12px 0 0 0;
+        }
+
+        .compare-table th:last-child {
+            border-radius: 0 12px 0 0;
+        }
+
+        .compare-table td:not(:first-child) {
+            text-align: center;
+        }
+
+        .compare-table td .fa-check {
+            color: var(--green);
+        }
+
+        .compare-table td .fa-xmark {
+            color: var(--muted);
+        }
+
+        .compare-table tr:hover td {
+            background: rgba(255, 255, 255, .02);
+        }
+
+        .cat-row td {
+            font-weight: 700;
+            color: var(--primary-l);
+            font-size: 12px;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            background: rgba(124, 58, 237, .04);
+        }
+
+        /* FAQ */
+        .faq-section {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 0 48px 80px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .faq-section h2 {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 32px;
+            text-align: center;
+        }
+
+        .faq-item {
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+
+        .faq-q {
+            padding: 18px 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            font-size: 15px;
+            transition: background .2s;
+        }
+
+        .faq-q:hover {
+            background: var(--card-hov);
+        }
+
+        .faq-q i {
+            color: var(--muted2);
+            transition: transform .3s;
+        }
+
+        .faq-item.open .faq-q i {
+            transform: rotate(45deg);
+        }
+
+        .faq-a {
+            display: none;
+            padding: 0 20px 18px;
+            color: var(--muted2);
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .faq-item.open .faq-a {
+            display: block;
+        }
+
+        @media(max-width:768px) {
+
+            .plans-grid,
+            .compare-section,
+            .faq-section {
+                padding-left: 20px;
+                padding-right: 20px
+            }
+
+            .page-hero {
+                padding: 60px 20px 40px
+            }
+
+            .compare-table th:nth-child(n+3),
+            .compare-table td:nth-child(n+3) {
+                display: none
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="aurora">
+        <div class="aurora-blob"></div>
+        <div class="aurora-blob"></div>
+        <div class="aurora-blob"></div>
+    </div>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="nav-logo">
+            <div class="nav-logo-icon">🤖</div><a href="index.html"><span class="grad-text">PrepMind</span><span>
+                    AI</span></a>
+        </div>
+        <div class="nav-links">
+            <a href="index.html#features">Features</a><a href="pricing.html" class="active">Pricing</a>
+            <a href="recruiter.html">Recruiters</a><a href="blog.html">Blog</a>
+        </div>
+        <div class="nav-cta">
+            <button class="btn-ghost" onclick="location.href='auth.html'">Sign In</button>
+            <button class="btn-primary-sm" onclick="location.href='auth.html'">Get Started</button>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <div class="page-hero">
+        <div class="section-label">Pricing</div>
+        <h1>Simple, transparent pricing</h1>
+        <p>Start free, upgrade when you're ready. No hidden fees. Cancel anytime.</p>
+        <div class="billing-toggle">
+            <span class="toggle-label">Monthly</span>
+            <label class="toggle-switch"><input type="checkbox" id="billing-toggle" onchange="toggleBilling()"><span
+                    class="slider"></span></label>
+            <span class="toggle-label">Annual <span class="save-pill">Save 25%</span></span>
+        </div>
+    </div>
+
+    <!-- PLANS -->
+    <div class="plans-grid">
+        <!-- Free -->
+        <div class="plan-card">
+            <div class="plan-icon" style="background:rgba(100,116,139,.12);color:var(--muted2)">🎙️</div>
+            <div class="plan-name">Free</div>
+            <div class="plan-price"><span class="price-curr">$</span><span class="price-num" data-monthly="0"
+                    data-annual="0">0</span></div>
+            <div class="price-period">/ month</div>
+            <div class="price-annual">&nbsp;</div>
+            <div class="plan-tagline">Perfect for exploring the platform and casual practice.</div>
+            <div class="plan-divider"></div>
+            <ul class="feature-list">
+                <li><i class="fas fa-check fi-ck"></i> 3 interviews per month</li>
+                <li><i class="fas fa-check fi-ck"></i> Behavioural questions</li>
+                <li><i class="fas fa-check fi-ck"></i> AI scoring & verdict</li>
+                <li><i class="fas fa-check fi-ck"></i> Basic strengths / improvements</li>
+                <li class="dim"><i class="fas fa-xmark fi-xm"></i> Resume upload</li>
+                <li class="dim"><i class="fas fa-xmark fi-xm"></i> JD matching</li>
+                <li class="dim"><i class="fas fa-xmark fi-xm"></i> PDF report export</li>
+                <li class="dim"><i class="fas fa-xmark fi-xm"></i> Advanced analytics</li>
+            </ul>
+            <button class="btn-cta btn-cta-outline" onclick="location.href='auth.html'">Start Free — No Card</button>
+        </div>
+
+        <!-- Pro -->
+        <div class="plan-card popular">
+            <div class="popular-badge">⭐ Most Popular</div>
+            <div class="plan-icon" style="background:rgba(124,58,237,.15);color:var(--primary-l)">🚀</div>
+            <div class="plan-name">Pro</div>
+            <div class="plan-price"><span class="price-curr">$</span><span class="price-num" data-monthly="12"
+                    data-annual="9">12</span></div>
+            <div class="price-period">/ month</div>
+            <div class="price-annual annual-msg" style="color:var(--green);font-size:12px">&nbsp;</div>
+            <div class="plan-tagline">For serious job seekers who want to improve fast and land offers.</div>
+            <div class="plan-divider"></div>
+            <ul class="feature-list">
+                <li><i class="fas fa-check fi-ck"></i> <b>Unlimited</b> interviews</li>
+                <li><i class="fas fa-check fi-ck"></i> All topics (DSA, System Design, PM)</li>
+                <li><i class="fas fa-check fi-ck"></i> Resume-tailored questions</li>
+                <li><i class="fas fa-check fi-ck"></i> Job Description match & gap analysis</li>
+                <li><i class="fas fa-check fi-ck"></i> Full analytics dashboard + radar chart</li>
+                <li><i class="fas fa-check fi-ck"></i> PDF report export</li>
+                <li><i class="fas fa-check fi-ck"></i> Company-specific prep packs</li>
+                <li><i class="fas fa-check fi-ck"></i> Priority AI processing</li>
+            </ul>
+            <button id="btn-upgrade-pro" class="btn-cta btn-cta-solid" onclick="startCheckout('pro')">
+                <i class="fas fa-arrow-right"></i> Upgrade to Pro
+            </button>
+        </div>
+
+        <!-- Team -->
+        <div class="plan-card">
+            <div class="plan-icon" style="background:rgba(6,182,212,.12);color:var(--cyan)">👥</div>
+            <div class="plan-name">Team</div>
+            <div class="plan-price"><span class="price-curr">$</span><span class="price-num" data-monthly="49"
+                    data-annual="37">49</span></div>
+            <div class="price-period">/ month</div>
+            <div class="price-annual annual-msg">&nbsp;</div>
+            <div class="plan-tagline">Ideal for bootcamps, university career centres, and SMEs.</div>
+            <div class="plan-divider"></div>
+            <ul class="feature-list">
+                <li><i class="fas fa-check fi-ck"></i> Everything in Pro</li>
+                <li><i class="fas fa-check fi-ck"></i> 5 team seats (add more at $8/seat)</li>
+                <li><i class="fas fa-check fi-ck"></i> Recruiter dashboard</li>
+                <li><i class="fas fa-check fi-ck"></i> Shareable assessment links</li>
+                <li><i class="fas fa-check fi-ck"></i> Candidate ranking & CSV export</li>
+                <li><i class="fas fa-check fi-ck"></i> Team admin panel</li>
+                <li><i class="fas fa-check fi-ck"></i> Dedicated onboarding call</li>
+                <li><i class="fas fa-check fi-ck"></i> Priority support</li>
+            </ul>
+            <button class="btn-cta btn-cta-outline" onclick="startCheckout('team')">Get Team Plan</button>
+        </div>
+
+        <!-- Enterprise -->
+        <div class="plan-card enterprise">
+            <div class="plan-icon" style="background:rgba(245,158,11,.12);color:#F59E0B">🏢</div>
+            <div class="plan-name">Enterprise</div>
+            <div class="plan-price"
+                style="font-size:28px;font-family:'Sora',sans-serif;font-weight:800;align-items:center">Custom</div>
+            <div class="price-period">&nbsp;</div>
+            <div class="price-annual">&nbsp;</div>
+            <div class="plan-tagline">White-labeling, SSO, ATS integration, and custom SLAs for large organisations.
+            </div>
+            <div class="plan-divider"></div>
+            <ul class="feature-list">
+                <li><i class="fas fa-check fi-ck"></i> Everything in Team</li>
+                <li><i class="fas fa-check fi-ck"></i> Unlimited seats</li>
+                <li><i class="fas fa-check fi-ck"></i> SSO / SAML integration</li>
+                <li><i class="fas fa-check fi-ck"></i> Custom branding / white-label</li>
+                <li><i class="fas fa-check fi-ck"></i> ATS integration (Greenhouse, Lever)</li>
+                <li><i class="fas fa-check fi-ck"></i> On-premise deployment option</li>
+                <li><i class="fas fa-check fi-ck"></i> Custom SLA + dedicated support</li>
+                <li><i class="fas fa-check fi-ck"></i> Quarterly business reviews</li>
+            </ul>
+            <a href="mailto:enterprise@prepmind.ai" class="btn-cta btn-cta-outline" style="text-align:center">Contact
+                Sales →</a>
+        </div>
+    </div>
+
+    <!-- COMPARISON TABLE -->
+    <div class="compare-section">
+        <h2>Full feature comparison</h2>
+        <table class="compare-table">
+            <thead>
+                <tr>
+                    <th>Feature</th>
+                    <th>Free</th>
+                    <th>Pro</th>
+                    <th>Team</th>
+                    <th>Enterprise</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="cat-row">
+                    <td colspan="5">📋 Interviews</td>
+                </tr>
+                <tr>
+                    <td>Monthly interviews</td>
+                    <td>3</td>
+                    <td>Unlimited</td>
+                    <td>Unlimited</td>
+                    <td>Unlimited</td>
+                </tr>
+                <tr>
+                    <td>Question topics</td>
+                    <td>Behavioural</td>
+                    <td>All topics</td>
+                    <td>All topics</td>
+                    <td>Custom</td>
+                </tr>
+                <tr>
+                    <td>Difficulty levels</td>
+                    <td>All</td>
+                    <td>All</td>
+                    <td>All</td>
+                    <td>All</td>
+                </tr>
+                <tr>
+                    <td>Countdown timer</td>
+                    <td><i class="fas fa-check"></i></td>
+                    <td><i class="fas fa-check"></i></td>
+                    <td><i class="fas fa-check"></i></td>
+                    <td><i class="fas fa-check"></i></td>
+                </tr>
+                <tr class="cat-row">
+                    <td colspan="5">🤖 AI Features</td>
+                </tr>
+                <tr>
+                    <td>AI scoring (5 axes)</td>
+                    <td><i class="fas fa-check"></i></td>
+                    <td><i class="fas fa-check"></i></td>
+                    <td><i class="fas fa-check"></i></td>
+                    <td><i class="fas fa-check"></i></td>
+                </tr>
+                <tr>
+                    <td>Resume-tailored questions</td>
+                    <td><i class="fas fa-xmark"></i></td>
+                    <td><i class="fas fa-check"></i></td>
+                    <td><i class="fas fa-check"></i></td>
+                    <td><i class="fas fa-check"></i></td>
+                </tr>
+                <tr>
+                    <td>JD match & gap analysis</td>
+                    <td><i class="fas fa-xmark"></i></td>
+                    <td><i class="fas fa-check"></i></td>
+                    <td><i class="fas fa-check"></i></td>
+                    <td><i class="fas fa-check"></i></td>
+                </tr>
+                <tr>
+                    <td>Model answer hints</td>
+                    <td><i class="fas fa-check"></i></td>
+                    <td><i class="fas fa-check"></i></td>
+                    <td><i class="fas fa-check"></i></td>
+                    <td><i class="fas fa-check"></i></td>
+                </tr>
+                <tr>
+                    <td>Priority AI processing</td>
+                    <td><i class="fas fa-xmark"></i></td>
+                    <td><i class="fas fa-check"></i></td>
+                    <td><i class="fas fa-check"></i></td>
+                    <td><i class="fas fa-check"></i></td>
+                </tr>
+                <tr class="cat-row">
+                    <td colspan="5">📊 Analytics</td>
+                </tr>
+                <tr>
+                    <td>Score dashboard</td>
+                    <td>Basic</td>
+                    <td>Full</td>
+                    <td>Full</td>
+                    <td>Full</td>
+                </tr>
+                <tr>
+                    <td>Radar / skill chart</td>
+                    <td><i class="fas fa-xmark"></i></td>
+                    <td><i class="fas fa-check"></i></td>
+                    <td><i class="fas fa-check"></i></td>
+                    <td><i class="fas fa-check"></i></td>
+                </tr>
+                <tr>
+                    <td>PDF report export</td>
+                    <td><i class="fas fa-xmark"></i></td>
+                    <td><i class="fas fa-check"></i></td>
+                    <td><i class="fas fa-check"></i></td>
+                    <td><i class="fas fa-check"></i></td>
+                </tr>
+                <tr>
+                    <td>Weak area alerts</td>
+                    <td><i class="fas fa-xmark"></i></td>
+                    <td><i class="fas fa-check"></i></td>
+                    <td><i class="fas fa-check"></i></td>
+                    <td><i class="fas fa-check"></i></td>
+                </tr>
+                <tr class="cat-row">
+                    <td colspan="5">🏢 Team / B2B</td>
+                </tr>
+                <tr>
+                    <td>Team seats</td>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>5+</td>
+                    <td>Unlimited</td>
+                </tr>
+                <tr>
+                    <td>Recruiter dashboard</td>
+                    <td><i class="fas fa-xmark"></i></td>
+                    <td><i class="fas fa-xmark"></i></td>
+                    <td><i class="fas fa-check"></i></td>
+                    <td><i class="fas fa-check"></i></td>
+                </tr>
+                <tr>
+                    <td>Shareable assessment links</td>
+                    <td><i class="fas fa-xmark"></i></td>
+                    <td><i class="fas fa-xmark"></i></td>
+                    <td><i class="fas fa-check"></i></td>
+                    <td><i class="fas fa-check"></i></td>
+                </tr>
+                <tr>
+                    <td>SSO / Custom branding</td>
+                    <td><i class="fas fa-xmark"></i></td>
+                    <td><i class="fas fa-xmark"></i></td>
+                    <td><i class="fas fa-xmark"></i></td>
+                    <td><i class="fas fa-check"></i></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- FAQ -->
+    <div class="faq-section">
+        <h2>Frequently asked questions</h2>
+        <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)">Do I need a credit card to start? <i class="fas fa-plus"></i>
+            </div>
+            <div class="faq-a">No. The Free plan requires no card. You can practice 3 interviews per month indefinitely
+                without paying anything.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)">Can I cancel anytime? <i class="fas fa-plus"></i></div>
+            <div class="faq-a">Yes, absolutely. You can cancel your Pro or Team subscription at any time from your
+                account settings. You'll retain access until the end of your billing period.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)">What payment methods do you accept? <i class="fas fa-plus"></i>
+            </div>
+            <div class="faq-a">We accept all major credit/debit cards via Stripe — Visa, Mastercard, Amex, and more. UPI
+                and bank transfers are available for Indian enterprise customers.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)">Is there an annual discount? <i class="fas fa-plus"></i></div>
+            <div class="faq-a">Yes! Toggle to "Annual" above to save 25% — Pro drops to $9/month ($108/year) and Team to
+                $37/month ($444/year).</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)">What topics are covered? <i class="fas fa-plus"></i></div>
+            <div class="faq-a">Pro covers Behavioural, Data Structures & Algorithms, System Design, Product Management,
+                Leadership, and more. New question packs are added monthly.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)">How does the recruiter assessment work? <i
+                    class="fas fa-plus"></i></div>
+            <div class="faq-a">Team admins create a role-specific assessment, share a unique link with candidates.
+                Candidates complete the AI interview without needing an account. Results appear ranked in the recruiter
+                dashboard.</div>
+        </div>
+    </div>
+
+    <script src="api.js"></script>
+    <script>
+        let isAnnual = false;
+        function toggleBilling() {
+            isAnnual = document.getElementById('billing-toggle').checked;
+            document.querySelectorAll('.price-num[data-monthly]').forEach(el => {
+                el.textContent = isAnnual ? el.dataset.annual : el.dataset.monthly;
+            });
+            document.querySelectorAll('.annual-msg').forEach(el => {
+                el.textContent = isAnnual ? 'billed annually' : '';
+            });
+        }
+        function toggleFaq(el) {
+            el.parentElement.classList.toggle('open');
+        }
+        async function startCheckout(plan) {
+            if (typeof Auth === 'undefined' || !Auth.isLoggedIn()) {
+                sessionStorage.setItem('pendingPlan', plan);
+                location.href = 'auth.html';
+                return;
+            }
+            const btn = document.getElementById(`btn-upgrade-${plan}`) || document.activeElement;
+            const orig = btn.innerHTML;
+            btn.innerHTML = '<span class="spinner" style="width:16px;height:16px;display:inline-block"></span> Processing…';
+            btn.disabled = true;
+            try {
+                const res = await fetch('http://localhost:3001/api/billing/create-checkout-session', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${Auth.getAccessToken()}` },
+                    body: JSON.stringify({ plan, billing: isAnnual ? 'annual' : 'monthly' })
+                });
+                const json = await res.json();
+                if (json.url) { window.location.href = json.url; }
+                else { alert('Could not start checkout. Please try again.'); }
+            } catch {
+                alert('Server error. Make sure the backend is running.');
+            } finally {
+                btn.innerHTML = orig; btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+
+</html>

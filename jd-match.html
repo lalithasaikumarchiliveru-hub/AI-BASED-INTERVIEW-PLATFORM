@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JD Matcher — PrepMind AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .page-wrap {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 48px 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .page-header {
+            margin-bottom: 40px;
+        }
+
+        .page-header h1 {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            color: var(--muted2);
+            font-size: 15px;
+        }
+
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        @media(max-width:700px) {
+            .two-col {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .panel {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 28px;
+        }
+
+        .panel h3 {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .panel-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+        }
+
+        textarea.jd-box {
+            width: 100%;
+            min-height: 240px;
+            padding: 16px;
+            background: rgba(255, 255, 255, .03);
+            border: 1.5px solid var(--border);
+            border-radius: 12px;
+            color: var(--text);
+            font: 400 14px 'Inter', sans-serif;
+            resize: vertical;
+            outline: none;
+            transition: border-color .2s;
+            line-height: 1.6;
+        }
+
+        textarea.jd-box:focus {
+            border-color: var(--primary-l);
+        }
+
+        textarea.jd-box::placeholder {
+            color: var(--muted);
+        }
+
+        .resume-status {
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .rs-ok {
+            background: rgba(16, 185, 129, .1);
+            border: 1px solid rgba(16, 185, 129, .25);
+            color: var(--green);
+        }
+
+        .rs-no {
+            background: rgba(245, 158, 11, .08);
+            border: 1px solid rgba(245, 158, 11, .2);
+            color: var(--amber);
+        }
+
+        .btn-match {
+            width: 100%;
+            padding: 14px;
+            margin-top: 16px;
+            background: linear-gradient(135deg, var(--primary), #a855f7);
+            border: none;
+            border-radius: 12px;
+            color: #fff;
+            font: 600 15px 'Inter', sans-serif;
+            cursor: pointer;
+            transition: all .2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-match:hover {
+            opacity: .9;
+            transform: translateY(-1px);
+        }
+
+        .btn-match:disabled {
+            opacity: .5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Results */
+        .results-panel {
+            display: none;
+            margin-top: 28px;
+        }
+
+        .results-panel.show {
+            display: block;
+            animation: fadeUp .4s ease;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(16px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        .match-score-card {
+            padding: 36px;
+            border-radius: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+            background: var(--card);
+        }
+
+        .match-gauge {
+            position: relative;
+            width: 160px;
+            height: 160px;
+            margin: 0 auto 16px;
+        }
+
+        .match-gauge svg {
+            transform: rotate(-90deg);
+        }
+
+        .gauge-bg {
+            fill: none;
+            stroke: rgba(255, 255, 255, .06);
+            stroke-width: 10;
+        }
+
+        .gauge-fill {
+            fill: none;
+            stroke-width: 10;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 1.2s ease;
+        }
+
+        .gauge-center {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gauge-num {
+            font-family: 'Sora', sans-serif;
+            font-size: 40px;
+            font-weight: 800;
+        }
+
+        .gauge-label {
+            font-size: 12px;
+            color: var(--muted2);
+            margin-top: 2px;
+        }
+
+        .verdict-text {
+            font-size: 15px;
+            color: var(--muted2);
+            max-width: 450px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        @media(max-width:600px) {
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .skills-box {
+            padding: 20px;
+            border-radius: 16px;
+            background: var(--card);
+            border: 1px solid var(--border);
+        }
+
+        .skills-box h4 {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .skill-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .skill-chip {
+            padding: 5px 12px;
+            border-radius: 9999px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .practice-qs {
+            padding: 24px;
+            border-radius: 16px;
+            background: var(--card);
+            border: 1px solid var(--border);
+        }
+
+        .practice-qs h4 {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .pq-item {
+            padding: 14px 16px;
+            border-radius: 12px;
+            background: rgba(124, 58, 237, .06);
+            border: 1px solid rgba(124, 58, 237, .15);
+            margin-bottom: 10px;
+            font-size: 14px;
+            line-height: 1.55;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .pq-num {
+            color: var(--primary-l);
+            font-weight: 700;
+            font-size: 13px;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .btn-practice-these {
+            padding: 13px 28px;
+            background: linear-gradient(135deg, var(--primary), #a855f7);
+            border: none;
+            border-radius: 12px;
+            color: #fff;
+            font: 600 14px 'Inter', sans-serif;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 16px;
+            transition: all .2s;
+        }
+
+        .btn-practice-these:hover {
+            opacity: .9;
+            transform: translateY(-1px);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="aurora">
+        <div class="aurora-blob"></div>
+        <div class="aurora-blob"></div>
+    </div>
+
+    <nav class="navbar">
+        <div class="nav-logo">
+            <div class="nav-logo-icon">🤖</div><a href="index.html"><span class="grad-text">PrepMind</span><span>
+                    AI</span></a>
+        </div>
+        <div class="nav-links"><a href="interview.html">Practice</a><a href="dashboard.html">Dashboard</a><a
+                href="pricing.html">Pricing</a></div>
+        <div class="nav-cta">
+            <div id="nav-user"></div>
+        </div>
+    </nav>
+
+    <div class="page-wrap">
+        <div class="page-header">
+            <div class="section-label">JD Matcher</div>
+            <h1>How well do you match this job?</h1>
+            <p>Paste a job description below. We'll compare it against your resume and tell you your match score, skill
+                gaps, and practice questions tailored to the role.</p>
+        </div>
+
+        <div class="two-col">
+            <!-- LEFT: Resume status + JD input -->
+            <div>
+                <div id="resume-status" class="resume-status rs-no"><i class="fas fa-triangle-exclamation"></i>
+                    <span>Loading resume status…</span>
+                </div>
+                <div class="panel">
+                    <h3>
+                        <div class="panel-icon" style="background:rgba(245,158,11,.12);color:#F59E0B"><i
+                                class="fas fa-briefcase"></i></div>Job Description
+                    </h3>
+                    <textarea class="jd-box" id="jd-input"
+                        placeholder="Paste the full job description here…&#10;&#10;e.g. 'We are looking for a Senior Software Engineer with 5+ years of experience in Python, Django, AWS...'"></textarea>
+                    <button class="btn-match" id="btn-match" onclick="runMatch()"><i
+                            class="fas fa-magnifying-glass-chart"></i> Analyse Match</button>
+                </div>
+            </div>
+
+            <!-- RIGHT: Upload prompt or resume info -->
+            <div>
+                <div class="panel" id="resume-panel">
+                    <h3>
+                        <div class="panel-icon" style="background:rgba(124,58,237,.12);color:var(--primary-l)"><i
+                                class="fas fa-file-user"></i></div>Your Resume
+                    </h3>
+                    <div id="resume-info" style="display:none">
+                        <div style="font-size:14px;color:var(--muted2);margin-bottom:16px" id="resume-summary-text">
+                        </div>
+                        <div style="margin-bottom:16px">
+                            <div
+                                style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.06em">
+                                Skills Detected</div>
+                            <div id="resume-skills" class="skill-chips"></div>
+                        </div>
+                    </div>
+                    <div id="upload-area">
+                        <div style="text-align:center;padding:32px 0">
+                            <div style="font-size:40px;margin-bottom:12px">📄</div>
+                            <div style="font-size:14px;color:var(--muted2);margin-bottom:16px">Upload your resume to
+                                unlock JD matching</div>
+                            <label for="resume-file" style="cursor:pointer">
+                                <div class="btn-match"
+                                    style="width:auto;display:inline-flex;padding:11px 24px;font-size:14px"><i
+                                        class="fas fa-upload"></i> Upload Resume (PDF/DOCX/TXT)</div>
+                                <input type="file" id="resume-file" accept=".pdf,.doc,.docx,.txt" style="display:none"
+                                    onchange="uploadResume(this)">
+                            </label>
+                            <div style="font-size:12px;color:var(--muted);margin-top:10px">Max 5MB · Your file is
+                                processed securely</div>
+                        </div>
+                    </div>
+                    <div id="upload-progress" style="display:none;text-align:center;padding:20px">
+                        <div class="spinner spinner-lg" style="margin:0 auto 12px"></div>
+                        <div style="font-size:14px;color:var(--muted2)">Extracting skills from resume…</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RESULTS -->
+        <div class="results-panel" id="results-panel">
+            <div class="match-score-card">
+                <div class="match-gauge">
+                    <svg width="160" height="160" viewBox="0 0 160 160">
+                        <circle class="gauge-bg" cx="80" cy="80" r="65" />
+                        <circle class="gauge-fill" cx="80" cy="80" r="65" id="gauge-fill" stroke="#7C3AED"
+                            stroke-dasharray="408" stroke-dashoffset="408" />
+                    </svg>
+                    <div class="gauge-center">
+                        <div class="gauge-num" id="match-score-num">0</div>
+                        <div class="gauge-label">Match Score</div>
+                    </div>
+                </div>
+                <p class="verdict-text" id="verdict-text"></p>
+            </div>
+
+            <div class="skills-grid">
+                <div class="skills-box">
+                    <h4><i class="fas fa-check-circle" style="color:var(--green)"></i> Matched Skills</h4>
+                    <div class="skill-chips" id="matched-skills"></div>
+                </div>
+                <div class="skills-box">
+                    <h4><i class="fas fa-triangle-exclamation" style="color:var(--amber)"></i> Skills to Develop</h4>
+                    <div class="skill-chips" id="missing-skills"></div>
+                </div>
+            </div>
+
+            <div class="practice-qs">
+                <h4><i class="fas fa-comments" style="color:var(--primary-l)"></i> Tailored Practice Questions</h4>
+                <div id="practice-questions"></div>
+                <button class="btn-practice-these" onclick="practiceThese()"><i class="fas fa-play"></i> Practice These
+                    Questions</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="api.js"></script>
+    <script>
+        const BASE_URL = 'http://localhost:3001';
+        let resumeData = null;
+
+        (function () {
+            const u = document.getElementById('nav-user');
+            if (typeof Auth !== 'undefined' && Auth.isLoggedIn()) {
+                const user = Auth.getUser();
+                u.innerHTML = `<span class="user-chip"><i class="fas fa-user"></i> ${user?.full_name || 'You'}</span>`;
+            } else { location.href = 'auth.html'; }
+        })();
+
+        async function loadResume() {
+            try {
+                const res = await fetch(`${BASE_URL}/api/resume/current`, { headers: { Authorization: `Bearer ${Auth.getAccessToken()}` } });
+                const json = await res.json();
+                if (json.data) {
+                    resumeData = json.data;
+                    document.getElementById('resume-status').className = 'resume-status rs-ok';
+                    document.getElementById('resume-status').innerHTML = `<i class="fas fa-check-circle"></i> Resume loaded: <b>${json.data.filename}</b>`;
+                    document.getElementById('upload-area').style.display = 'none';
+                    document.getElementById('resume-info').style.display = 'block';
+                    document.getElementById('resume-summary-text').textContent = json.data.summary_text || '';
+                    const chips = document.getElementById('resume-skills');
+                    (json.data.skills_json || []).forEach(s => {
+                        chips.innerHTML += `<span class="skill-chip pill-violet">${s}</span>`;
+                    });
+                } else {
+                    document.getElementById('resume-status').innerHTML = '<i class="fas fa-triangle-exclamation"></i> No resume uploaded yet. Upload on the right to start.';
+                }
+            } catch { document.getElementById('resume-status').innerHTML = '<i class="fas fa-xmark-circle"></i> Could not load resume. Is the server running?'; }
+        }
+
+        async function uploadResume(input) {
+            const file = input.files[0]; if (!file) return;
+            document.getElementById('upload-area').style.display = 'none';
+            document.getElementById('upload-progress').style.display = 'block';
+            const fd = new FormData(); fd.append('resume', file);
+            try {
+                const res = await fetch(`${BASE_URL}/api/resume/upload`, { method: 'POST', headers: { Authorization: `Bearer ${Auth.getAccessToken()}` }, body: fd });
+                if (!res.ok) throw await res.json();
+                await loadResume();
+            } catch (e) {
+                alert('Upload failed: ' + (e.error || 'Unknown error'));
+                document.getElementById('upload-area').style.display = 'block';
+            } finally { document.getElementById('upload-progress').style.display = 'none'; }
+        }
+
+        async function runMatch() {
+            const jd = document.getElementById('jd-input').value.trim();
+            if (jd.length < 30) { alert('Please paste a full job description (at least 30 characters).'); return; }
+            if (!resumeData) { alert('Please upload your resume first.'); return; }
+            const btn = document.getElementById('btn-match');
+            btn.disabled = true; btn.innerHTML = '<span class="spinner" style="width:16px;height:16px;display:inline-block"></span> Analysing…';
+            try {
+                const res = await fetch(`${BASE_URL}/api/resume/jd-match`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${Auth.getAccessToken()}` },
+                    body: JSON.stringify({ jd_text: jd })
+                });
+                const json = await res.json();
+                if (!json.success) throw json;
+                displayResults(json.data);
+            } catch (e) { alert('Analysis failed: ' + (e.error || 'Unknown error')); }
+            finally { btn.disabled = false; btn.innerHTML = '<i class="fas fa-magnifying-glass-chart"></i> Analyse Match'; }
+        }
+
+        function displayResults(data) {
+            const panel = document.getElementById('results-panel');
+            panel.classList.add('show');
+
+            // Score gauge
+            const score = data.match_score || 0;
+            document.getElementById('match-score-num').textContent = score;
+            const circ = 2 * Math.PI * 65;
+            document.getElementById('gauge-fill').setAttribute('stroke-dasharray', circ);
+            setTimeout(() => {
+                document.getElementById('gauge-fill').setAttribute('stroke-dashoffset', circ - (score / 100) * circ);
+                const colour = score >= 70 ? '#10B981' : score >= 45 ? '#F59E0B' : '#EF4444';
+                document.getElementById('gauge-fill').setAttribute('stroke', colour);
+            }, 50);
+            document.getElementById('verdict-text').textContent = data.verdict || '';
+
+            // Skills
+            const matched = document.getElementById('matched-skills');
+            const missing = document.getElementById('missing-skills');
+            matched.innerHTML = ''; missing.innerHTML = '';
+            (data.matched_skills || []).forEach(s => { matched.innerHTML += `<span class="skill-chip pill-green">${s}</span>`; });
+            (data.missing_skills || []).forEach(s => { missing.innerHTML += `<span class="skill-chip pill-amber">${s}</span>`; });
+
+            // Questions
+            const qs = document.getElementById('practice-questions');
+            qs.innerHTML = '';
+            (data.practice_questions || []).forEach((q, i) => {
+                qs.innerHTML += `<div class="pq-item"><div class="pq-num">Q${i + 1}</div><div>${q}</div></div>`;
+            });
+
+            panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function practiceThese() { location.href = 'interview.html'; }
+
+        loadResume();
+    </script>
+</body>
+
+</html>
